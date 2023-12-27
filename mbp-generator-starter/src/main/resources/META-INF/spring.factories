@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.xh.mbp.generator.template.MbpGeneratorTemplate 
+com.xh.mbp.generator.config.MbpGeneratorConfiguration,\
+com.xh.mbp.generator.properties.MbpGeneratorProperties
