@@ -1,4 +1,4 @@
-package com.xh.mbp.generator.dto;
+package com.xh.mbp.generator.factory.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

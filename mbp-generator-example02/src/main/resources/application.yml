@@ -17,7 +17,7 @@ mybatis-plus:
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: com.xh.**.model.**.*
   generator:
-    enabled: true
+    enabled: false
     #    author: H.Yang
     #    disable-open-dir: true
     output-dir: D:/code

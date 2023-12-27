@@ -9,11 +9,13 @@ import com.baomidou.mybatisplus.generator.config.builder.Mapper;
 import com.baomidou.mybatisplus.generator.config.builder.Service;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.fill.Column;
-import com.xh.mbp.generator.properties.MbpGeneratorProperties;
+import com.xh.mbp.generator.factory.dto.GlobalConfigDTO;
+import com.xh.mbp.generator.factory.dto.PackageConfigDTO;
+import com.xh.mbp.generator.factory.dto.StrategyConfigDTO;
+import com.xh.mbp.generator.factory.dto.TemplateConfigDTO;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,18 +40,18 @@ public class MbpConfigFactory {
      * 全局配置
      *
      * @param builder
-     * @param generatorProperties
+     * @param dto
      */
-    public void getGlobalConfig(GlobalConfig.Builder builder, MbpGeneratorProperties generatorProperties) {
+    public void getGlobalConfig(GlobalConfig.Builder builder, GlobalConfigDTO dto) {
         // 设置作者
-        builder.author(generatorProperties.getAuthor())
+        builder.author(dto.getAuthor())
                 // 日期类型的字段使用哪个类型，默认是 java8的 日期类型，此处改为 java.util.date
                 .dateType(DateType.ONLY_DATE)
                 // 指定输出目录
-                .outputDir(generatorProperties.getSourcePath());
+                .outputDir(dto.getSourcePath());
 
         // 禁止打开输出目录，默认打开
-        if (!generatorProperties.isDisableOpenDir()) {
+        if (!dto.isDisableOpenDir()) {
             builder.disableOpenDir();
         }
     }
@@ -58,22 +60,22 @@ public class MbpConfigFactory {
      * 包配置
      *
      * @param builder
-     * @param generatorProperties
+     * @param dto
      */
-    public void getPackageConfig(PackageConfig.Builder builder, MbpGeneratorProperties generatorProperties) {
+    public void getPackageConfig(PackageConfig.Builder builder, PackageConfigDTO dto) {
         // 设置父包名
-        builder.parent(generatorProperties.getPackagePath())
+        builder.parent(dto.getPackagePath())
                 //Mapper XML 包名
                 .xml("mapper")
                 // 设置mapperXml生成路径
-                .pathInfo(Collections.singletonMap(OutputFile.xml, generatorProperties.getResourcePath()));
+                .pathInfo(Collections.singletonMap(OutputFile.xml, dto.getResourcePath()));
     }
 
     /**
      * @param builder
-     * @param generatorProperties
+     * @param dto
      */
-    public void getTemplateConfig(TemplateConfig.Builder builder, MbpGeneratorProperties generatorProperties) {
+    public void getTemplateConfig(TemplateConfig.Builder builder, TemplateConfigDTO dto) {
         builder.entity("templates/java/entity.java");
         builder.mapper("templates/java/mapper.java");
         builder.xml("templates/java/mapper.xml");
@@ -90,29 +92,29 @@ public class MbpConfigFactory {
         fileSuffixDict.put(TemplateType.SERVICE_IMPL, "service");
         fileSuffixDict.put(TemplateType.CONTROLLER, "controller");
 
-        fileSuffixDict.entrySet().stream().filter(entry -> !generatorProperties.getSelectedOutputFiles().contains(entry.getValue())).forEach(entry -> builder.disable(entry.getKey()));
+        fileSuffixDict.entrySet().stream().filter(entry -> !dto.getSelectedOutputFiles().contains(entry.getValue())).forEach(entry -> builder.disable(entry.getKey()));
     }
 
     /**
      * 策略配置
      *
      * @param builder
-     * @param generatorProperties
+     * @param dto
      */
-    public void getStrategyConfig(StrategyConfig.Builder builder, List<String> tableNames, List<String> tablePrefixs, MbpGeneratorProperties generatorProperties) {
-        builder.addInclude(tableNames); // 设置需要生成的表名
+    public void getStrategyConfig(StrategyConfig.Builder builder, StrategyConfigDTO dto) {
+        builder.addInclude(dto.getTableNames()); // 设置需要生成的表名
         // 设置过滤表前缀
-        if (tablePrefixs != null && !tablePrefixs.isEmpty()) {
-            builder.addTablePrefix(tablePrefixs);
+        if (dto.getTablePrefixs() != null && !dto.getTablePrefixs().isEmpty()) {
+            builder.addTablePrefix(dto.getTablePrefixs());
         }
 
-        this.entityConfig(builder.entityBuilder(), generatorProperties);
+        this.entityConfig(builder.entityBuilder(), dto);
         this.mapperConfig(builder.mapperBuilder());
         this.serviceConfig(builder.serviceBuilder());
         this.controllerConfig(builder.controllerBuilder());
     }
 
-    private void entityConfig(Entity.Builder entityBuilder, MbpGeneratorProperties generatorProperties) {
+    private void entityConfig(Entity.Builder entityBuilder, StrategyConfigDTO dto) {
         // 实体类策略配置
         entityBuilder.enableFileOverride()
                 .disableSerialVersionUID()
@@ -123,12 +125,12 @@ public class MbpConfigFactory {
                 .addTableFills(new Column("update_at", FieldFill.INSERT_UPDATE))
                 .formatFileName("%sEntity");
 
-        if (generatorProperties.isEnableLombok()) {
+        if (dto.isEnableLombok()) {
             entityBuilder.enableLombok();
         }
 
         // 开启生成实体时生成字段注解。会在实体类的属性前，添加[@TableField("nickname")]
-        if (generatorProperties.isEnableTableFieldAnnotation()) {
+        if (dto.isEnableTableFieldAnnotation()) {
             entityBuilder.enableTableFieldAnnotation();
         }
     }
