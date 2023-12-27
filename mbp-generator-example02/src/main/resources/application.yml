@@ -1,0 +1,36 @@
+server:
+  port: 8001
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: web-jar-example
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource # 指定druid数据源
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: admini
+
+mybatis-plus:
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.xh.**.model.**.*
+  generator:
+    enabled: true
+    #    author: H.Yang
+    #    disable-open-dir: true
+    output-dir: D:/code
+    #    package-path: com.xh.generator.example
+    #    enable-lombok: true
+    #    enable-table-field-annotation: false
+    selected-output-files:
+      - entity
+      - mapper
+      - xml
+      - service
+      - controller
+    datasource:
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8&serverTimezone=Asia/Shanghai
+      username: root
+      password: admini
