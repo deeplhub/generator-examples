@@ -1,4 +1,4 @@
-# MyBatis-Plus代码生成器（独立应用）
+# MyBatis-Plus代码生成器（web应用）
 
 基于MyBatis-Plus的代码生成器。
 

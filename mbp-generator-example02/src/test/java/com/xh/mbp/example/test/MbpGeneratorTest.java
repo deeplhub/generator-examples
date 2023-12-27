@@ -1,6 +1,6 @@
 package com.xh.mbp.example.test;
 
-import com.xh.mbp.example.service.MbpGeneratorService;
+import com.xh.mbp.generator.template.MbpGeneratorTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Map;
 
 /**
  * @author H.Yang
@@ -20,29 +21,28 @@ import java.util.Arrays;
 public class MbpGeneratorTest {
 
     @Resource
-    private MbpGeneratorService generatorService;
-
+    private MbpGeneratorTemplate generatorTemplate;
 
     @Test
     public void create() {
 
-        generatorService.create(Arrays.asList("gateway_route", "gateway_route_item"));
+        generatorTemplate.create(Arrays.asList("gateway_route", "gateway_route_item"), null);
     }
 
     @Test
     public void outputString() {
-        //Map<String, String> map = generatorTemplate.outputString(Arrays.asList("gateway_route", "gateway_route_item"), null);
-        //
-        //for (Map.Entry<String, String> entry : map.entrySet()) {
-        //    System.out.println(entry.getKey());
-        //    System.out.println(entry.getValue());
-        //
-        //    System.out.println();
-        //    System.out.println();
-        //    System.out.println("------------------------------------");
-        //    System.out.println();
-        //    System.out.println();
-        //}
+        Map<String, String> map = generatorTemplate.outputString(Arrays.asList("gateway_route", "gateway_route_item"), null);
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue());
+
+            System.out.println();
+            System.out.println();
+            System.out.println("------------------------------------");
+            System.out.println();
+            System.out.println();
+        }
 
     }
 }
